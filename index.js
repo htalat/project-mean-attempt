@@ -26,7 +26,6 @@ var router = express.Router();
 router.use(function(req, res, next) {
 
     console.log('Something is happening.');
-    console.log(req.params);
     next();
 });
 
@@ -65,8 +64,7 @@ router.route('/items')
     
     router.route('/items/:item_id')
     	.get(function(req,res){
-    	console.log(req);
-   	console.log(req.params.item_id);   		
+   	
     		Item.findById(req.params.item_id,function(err,item){
     			if(err)
     				res.send(err);
@@ -83,9 +81,7 @@ router.route('/items')
                 res.send(err);
 
             item.name = req.body.name; 
-            item.quantity = req.body.quantity; // update the items info
-
-            // save the item
+            item.quantity = req.body.quantity;
             item.save(function(err) {
                 if (err)
                     res.send(err);
@@ -97,8 +93,7 @@ router.route('/items')
     })
     
    .delete(function(req, res) {
-   	console.log(req);
-   	console.log(req.params.item_id);
+   	
         Item.remove({
             _id: req.params.item_id
         }, function(err, item) {
