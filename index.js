@@ -24,14 +24,15 @@ var port = process.env.PORT || 8080;
 var router = express.Router();
 
 router.use(function(req, res, next) {
-    // do logging
+
     console.log('Something is happening.');
-    next(); // make sure we go to the next routes and don't stop here
+    console.log(req.params);
+    next();
 });
 
 
 router.get('/',function(req,res){
-    res.json({message: 'hoorayyy'});
+    res.json({message: 'index page.'});
 })
 
 router.route('/items')
@@ -39,11 +40,10 @@ router.route('/items')
     // create a item (accessed at POST http://localhost:8080/api/items)
     .post(function(req, res) {
         
-        var item = new Item();      // create a new instance of the Item model
-        item.name = req.body.name;  // set the item name (comes from the request)
+        var item = new Item();    
+        item.name = req.body.name; 
         item.quantity = req.body.quantity;
-
-        // save the item and check for errors
+        
         item.save(function(err) {
             if (err)
                 res.send(err);
@@ -63,8 +63,10 @@ router.route('/items')
     });
     
     
-    router.route('items/:item_id')
+    router.route('/items/:item_id')
     	.get(function(req,res){
+    	console.log(req);
+   	console.log(req.params.item_id);   		
     		Item.findById(req.params.item_id,function(err,item){
     			if(err)
     				res.send(err);
@@ -95,6 +97,8 @@ router.route('/items')
     })
     
    .delete(function(req, res) {
+   	console.log(req);
+   	console.log(req.params.item_id);
         Item.remove({
             _id: req.params.item_id
         }, function(err, item) {
