@@ -38,10 +38,11 @@ router.route('/items')
 
     // create a item (accessed at POST http://localhost:8080/api/items)
     .post(function(req, res) {
-        
+        console.log(req.body);
         var item = new Item();    
-        item.name = req.body.name; 
+        item.name     = req.body.name; 
         item.quantity = req.body.quantity;
+        item.price    = req.body.price;
         
         item.save(function(err) {
             if (err)
@@ -75,14 +76,19 @@ router.route('/items')
     	.put(function(req, res) {
 
         // use our item model to find the item we want
+        console.log("ITEM_ID:" + req.params.item_id);
         Item.findById(req.params.item_id, function(err, item) {
 
             if (err)
                 res.send(err);
 
+            console.log(req.body);
             item.name = req.body.name; 
             item.quantity = req.body.quantity;
-            item.save(function(err) {
+            item.price = req.body.price;
+            
+            item.save(function(err) 
+            {
                 if (err)
                     res.send(err);
 
